@@ -185,7 +185,7 @@ static const char *option_help[] = {
 	"Test EC (best used with the --login or --pin option)"
 };
 
-static const char *	app_name = "pkcs11-tool"; /* for utils.c */
+static const char *	app_name = "pkcs11-tool --module <arg>"; /* XXX: for utils.c */
 
 static int		verbose = 0;
 static const char *	opt_input = NULL;

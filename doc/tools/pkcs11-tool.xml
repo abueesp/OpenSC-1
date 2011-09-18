@@ -14,7 +14,7 @@
 	<refsect1>
 		<title>Synopsis</title>
 		<para>
-			<command>pkcs11-tool</command> [OPTIONS]
+			<command>pkcs11-tool</command> <option>--module</option> <varname>arg</varname> [OPTIONS]
 		</para>
 	</refsect1>
 
@@ -33,6 +33,11 @@
 		<title>Options</title>
 		<para>
 			<variablelist>
+				<varlistentry>
+					<term><option>--module</option> <varname>mod</varname></term>
+					<listitem><para>Specify a PKCS#11 module to load.</para></listitem>
+				</varlistentry>
+				
 				<varlistentry>
 					<term><option>--login, -l</option></term>
 					<listitem><para>Authenticate to the token before performing
@@ -207,11 +212,7 @@
 					<listitem><para>Specify the path to a file for output.</para></listitem>
 				</varlistentry>
 
-				<varlistentry>
-					<term><option>--module</option> <varname>mod</varname></term>
-					<listitem><para>Specify a PKCS#11 module (or library) to
-					load.</para></listitem>
-				</varlistentry>
+
 
 				<varlistentry>
 					<term><option>--moz-cert</option> <varname>path</varname>,
