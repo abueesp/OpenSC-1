@@ -160,13 +160,13 @@ mkdir -p target/usr/local/bin
 cp MacOSX/opensc-uninstall target/usr/local/bin
 
 # Build installer package
-/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker \
+/Applications/Utilities/Developer/PackageMaker.app/Contents/MacOS/PackageMaker \
 -r target \
 -o OpenSC-@PACKAGE_VERSION@-${OSX_RELEASE}.pkg \
 -t "OpenSC @PACKAGE_VERSION@ for Mac OS X ${OSX_RELEASE}" \
 -i org.opensc-project.mac \
 -n @PACKAGE_VERSION@ \
--g 10.4 \
+-g 10.8 \
 -b \
 -v \
 --no-relocate \
