@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ex
-OSX_RELEASE=${1:-10.6}
+OSX_RELEASE=${1:-10.8}
 INTEL_ONLY=${INTEL_ONLY:-no}
 test -x ./configure || ./bootstrap
 BUILDPATH=${PWD}
@@ -14,6 +14,9 @@ case ${OSX_RELEASE} in
 	;;
 	"10.6")
 		export CFLAGS="-isysroot /Developer/SDKs/MacOSX10.6.sdk -arch i386 -arch x86_64 -mmacosx-version-min=10.6 -g"
+	;;
+        "10.8")
+		export CFLAGS="-isysroot / -arch x86_64 -mmacosx-version-min=10.6 -g"
 	;;
 	*)
 		echo "OSX ${OSX_RELEASE} is not supported!"
@@ -41,7 +44,7 @@ test ${OSX_RELEASE} = "10.5" && export LTLIB_LIBS="/Developer/SDKs/MacOSX10.5.sd
 # check if make install is required
 case "${OSX_RELEASE}" in
 	"10.5") if test ${INTEL_ONLY} = "yes"; then required_arch="i386"; else required_arch="ppc7400"; fi ;;
-	"10.6") required_arch="x86_64" ;;
+	"10.6"|"10.8") required_arch="x86_64" ;;
 esac
 
 if !(test -e src/libopensc/.libs/libopensc.dylib && (file src/libopensc/.libs/libopensc.dylib | grep $required_arch)); then
@@ -64,7 +67,8 @@ rm target/Library/OpenSC/lib/libopensc.la
 # generate .bundle (required by Adobe Acrobat)
 ./MacOSX/libtool-bundle target/Library/OpenSC/lib/opensc-pkcs11.so target/Library/OpenSC/lib
 
-if test ${OSX_RELEASE} = "10.6"; then
+
+if test ${OSX_RELEASE} = "10.6" -o ${OSX_RELEASE} = "10.8"; then
 	# Build libp11+engine_pkcs11. Attention! Uses modified branches from github!
 	test -d libp11 || git clone http://github.com/martinpaljak/libp11.git -b martin
 	(cd libp11
@@ -93,7 +97,7 @@ case "${OSX_RELEASE}" in
 			mv project.tmp OpenSC.tokend/Tokend.xcodeproj/project.pbxproj
 		fi
 	;;
-	"10.6") git --git-dir OpenSC.tokend/.git --work-tree OpenSC.tokend checkout --force origin/10.6-0.12.2; rm -rf OpenSC.tokend/build ;;
+	"10.6"|"10.8") git --git-dir OpenSC.tokend/.git --work-tree OpenSC.tokend checkout --force origin/10.6-0.12.2; rm -rf OpenSC.tokend/build ;;
 esac
 
 if ! test -e build-${OSX_RELEASE}.tar.gz; then
@@ -101,7 +105,7 @@ if ! test -e build-${OSX_RELEASE}.tar.gz; then
 	"10.5")
 		curl http://martinpaljak.net/download/build-10.5.tar.gz -o build-${OSX_RELEASE}.tar.gz
 	;;
-	"10.6")
+	"10.6"|"10.8")
 		curl http://martinpaljak.net/download/build-10.6.tar.gz -o build-${OSX_RELEASE}.tar.gz
 	;;
 	esac
