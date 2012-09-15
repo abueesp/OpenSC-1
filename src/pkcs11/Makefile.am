@@ -67,6 +67,7 @@ endif
 install-exec-hook:	install-pkcs11DATA
 	for l in opensc-pkcs11$(PKCS11_SUFFIX) onepin-opensc-pkcs11$(PKCS11_SUFFIX) pkcs11-spy$(PKCS11_SUFFIX); do \
 		rm -f "$(DESTDIR)$(pkcs11dir)/$$l"; \
+		mkdir -p "$(DESTDIR)$(pkcs11dir)"; \
 		$(LN_S) ../$$l "$(DESTDIR)$(pkcs11dir)/$$l"; \
 	done
 
