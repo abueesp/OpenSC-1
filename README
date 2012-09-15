@@ -1,4 +1,14 @@
+Fork of martinpaljak/OpenSC. Builds on OS X 10.8
+
 OpenSC documentation wiki is available online at
 	http://www.opensc-project.org/opensc/
 
 Please take a look at the documentation before trying to use OpenSC.
+
+MacOS X build dependencies
+- The usual build requirements
+  - Command Line Tools for Xcode
+  - autoconf, automake, autotools, libtool
+- Auxiliary Tools for Xcode
+  - For PackageMaker
+     - You may need to change the path in MacOSX/build-package.in
