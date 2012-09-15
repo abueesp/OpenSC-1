@@ -127,7 +127,31 @@ fi
 test -L OpenSC.tokend/build/opensc-src || ln -sf ${BUILDPATH}/src OpenSC.tokend/build/opensc-src
 
 # build and copy OpenSC.tokend
-xcodebuild -configuration Deployment -project OpenSC.tokend/Tokend.xcodeproj
+case "${OSX_RELEASE}" in
+    "10.5|10.6")
+	xcodebuild -configuration Deployment -project OpenSC.tokend/Tokend.xcodeproj
+	;;
+    "10.8")
+	# patch file. patch suggested by xcode itself :)
+	patch="\
+--- OpenSC/OpenSC.tokend/build/security_cdsa_utilities.framework/Headers/handletemplates.h.old	2012-09-16 00:29:08.000000000 +0200
++++ OpenSC/OpenSC.tokend/build/security_cdsa_utilities.framework/Headers/handletemplates.h	2012-09-16 00:27:57.000000000 +0200
+@@ -129,7 +129,7 @@
+     // @@@  Remove when 4003540 is fixed
+     template <class Subtype>
+     static void findAllRefs(std::vector<_Handle> &refs) {
+-        state().findAllRefs<Subtype>(refs);
++        state().template findAllRefs<Subtype>(refs);
+     }
+
+ protected:
+"
+	echo -e "$patch" | patch -p1
+
+	xcodebuild -configuration Deployment -project OpenSC.tokend/Tokend.xcodeproj -sdk macosx10.8 -arch x86_64
+	;;
+esac
+
 mkdir -p target/System/Library/Security/tokend
 mv OpenSC.tokend/build/OpenSC.tokend target/System/Library/Security/tokend
 
